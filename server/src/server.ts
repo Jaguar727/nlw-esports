@@ -2,12 +2,13 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import { convertHourStringToMinutes } from "./utils/convert-hour-string-to-minutes";
 import { convertMinutesToHourString } from "./utils/counter-minutes-to-hour-string";
-import cors from 'cors'
+import cors from "cors";
 
 const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
+app.use(cors());
 
 // HTTP methods/ API Restful
 
@@ -35,7 +36,7 @@ app.post("/games/:id/ads", async (req, res) => {
             name: body.name,
             yearsPlaying: body.yearsPlaying,
             discord: body.discord,
-            weekDays: body.weekDays.join(','),
+            weekDays: body.weekDays.join(","),
             hourStart: convertHourStringToMinutes(body.hourStart),
             hourEnd: convertHourStringToMinutes(body.hourEnd),
             useVoiceChannel: body.useVoiceChannel,
@@ -72,7 +73,7 @@ app.get("/games/:id/ads", async (req, res) => {
                 ...ad,
                 weekDays: ad.weekDays.split(","),
                 hourStart: convertMinutesToHourString(ad.hourStart),
-                hourEnd: convertMinutesToHourString(ad.hourEnd)
+                hourEnd: convertMinutesToHourString(ad.hourEnd),
             };
         })
     );
